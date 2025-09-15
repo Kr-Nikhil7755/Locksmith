@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+    --primary-color: #00ff41; /* Changed to a classic "matrix green" */
+    --dark-bg: #0d1117;
+    --light-gray: #8b949e;
+    --border-color: #30363d;
+    --container-bg: rgba(13, 17, 23, 0.85);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #000; /* Darker background for the effect */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* --- New Canvas Background --- */
+#matrix-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    background: var(--container-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.container:hover {
+    box-shadow: 0 0 50px rgba(0, 255, 65, 0.4);
+}
+
+/* --- Corrected visibility for output panel --- */
+#step4 {
+    display: none; /* JS will change this to 'block' on generation */
+}
+.step {
+    margin-top: 25px;
+}
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.main-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3em;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+    margin: 0;
+}
+
+#reloadBtn svg { fill: var(--light-gray); transition: fill 0.3s, transform 0.3s; }
+#reloadBtn:hover svg { fill: var(--primary-color); transform: rotate(180deg); }
+#reloadBtn { background: transparent; border: none; cursor: pointer; position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding: 10px; }
+
+.subtitle { color: var(--light-gray); margin-top: 5px; margin-bottom: 30px; }
+.strength-selector { display: flex; justify-content: space-around; gap: 10px; }
+.strength-btn { flex-grow: 1; background: transparent; border: 2px solid var(--border-color); color: var(--light-gray); padding: 12px; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold; transition: all 0.3s; }
+.strength-btn.active, .strength-btn:hover { color: #ffffff; border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 255, 65, 0.5); transform: translateY(-3px); }
+
+#userInput { width: calc(100% - 24px); padding: 12px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--dark-bg); color: #c9d1d9; font-size: 1em; margin-top: 20px; text-align: center; transition: all 0.3s; }
+#userInput:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 255, 65, 0.5); }
+
+#generateBtn { width: 100%; padding: 15px; font-size: 1.2em; font-weight: bold; font-family: 'Orbitron', sans-serif; color: #000; background: var(--primary-color); border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; margin-top: 20px; }
+#generateBtn:hover { background-color: #fff; box-shadow: 0 0 20px var(--primary-color); }
+
+.password-box { display: flex; align-items: center; justify-content: space-between; background: var(--dark-bg); border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 5px; margin-top: 10px; }
+#passwordOutput { color: var(--primary-color); font-family: 'Orbitron', sans-serif; font-size: 1.4em; letter-spacing: 2px; word-break: break-all; }
+#copyBtn { background: transparent; border: none; cursor: pointer; }
+#copyBtn svg { fill: var(--light-gray); transition: fill 0.3s, transform 0.3s; }
+#copyBtn:hover svg { fill: var(--primary-color); transform: scale(1.1); }
+.copy-success-message { color: var(--primary-color); opacity: 0; transition: opacity 0.5s; margin-top: 10px; }
+
+.strength-indicator { margin-top: 20px; }
+.indicator-bar { height: 10px; width: 0%; border-radius: 5px; background-color: #e74c3c; transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out; }
+.indicator-text { margin-top: 5px; font-weight: bold; color: var(--light-gray); transition: color 0.5s; }
+
+.backend-features { margin-top: 20px; }
+#pwnedCheckBtn { background: transparent; border: 1px solid #c93c3c; color: #c93c3c; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+#pwnedCheckBtn:hover { background: #c93c3c; color: #fff; }
+#pwnedCheckResult { margin-top: 10px; min-height: 20px; font-weight: bold; }
+
+.history-panel { margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px; opacity: 0; transform: translateY(20px); transition: all 0.5s; max-height: 0; overflow: hidden; }
+.history-panel.visible { opacity: 1; max-height: 300px; } /* For smooth animation */
+#historyList { list-style-type: none; padding: 0; max-height: 150px; overflow-y: auto; text-align: left; }
+#historyList li { background: var(--dark-bg); padding: 10px; margin-bottom: 5px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; opacity: 0.8; transition: all 0.3s; }
+#historyList li:hover { opacity: 1; transform: translateX(5px); }
+#historyList strong { color: var(--primary-color); font-family: 'Orbitron', sans-serif; }
+#clearHistoryBtn { background: transparent; border: 1px solid var(--light-gray); color: var(--light-gray); padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: all 0.3s; margin-top: 10px; }
+#clearHistoryBtn:hover { border-color: #e74c3c; color: #e74c3c; }
